@@ -1,0 +1,109 @@
+{% load url from future %}
+{% load staticfiles %}
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="Keywords" content="公益活动 中山大学 发布 申请 学生" />
+    <meta name="description" content="一个公益活动发布，参加以及管理的平台，包括学生，组织者和管理员三种不同权限的用户。"/>
+
+	<link rel="stylesheet" href="{% static 'css/base.css' %}">
+	<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery-ui.min.css' %}">
+	<script type="text/javascript" src="{% static 'js/jquery.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/base.js' %}"></script>
+	<link rel="shortcut icon" type="image/png" href="{% static 'image/logo.png'%}"/>
+
+	<title>Philosopher</title>
+</head>
+<body>
+
+	<div class="coverModel"></div>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid" id="basePage">
+			<div class="navbar-header">
+				<div class="nav-brand">
+					<a href="/">
+					<img src="{% static 'image/logo.png'%}" >
+					<span class="title" >公益活动管理系统</span>
+					</a>
+				</div>
+				<div>
+					{% if user.is_authenticated %}
+						<div class="navbar-right login-info">
+						{% if isOrganizer or isAdmin %}
+							<a class="btn btn-primary" href="/philosopher/activity/add">添加活动</a>
+						{% endif %}
+						{% if isAdmin %}
+							<a class="btn btn-warning" href="/philosopher/activity/examlist">待审批</a>
+						{% endif %}
+
+							<span><a class="btn " href="/philosopher/accounts/info/{{ user.id }}"><img id="user-avatar" src="{{ user.userprofile.getAvatar }}" alt="{{ user.username }}" title="{{ user.username }}"/>{{ user.username }}</a></span>
+							<span><a class="btn " href="/accounts/logout/">退出登录</a></span>
+						</div>
+					{% else %}
+						<div class="navbar-right login-info">
+							<span> <a class="btn " href="/accounts/login/">登录</a></span>
+							<span><a class="btn " href="/philosopher/accounts/signup">注册</a></span>
+						</div>
+					{% endif %}
+				</div>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="blockContent">
+					{% block content %}
+					{% endblock content %}
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="rightContent">
+
+			<div class="search">
+				<form action="/philosopher/activity/search/" method="get" class="form-inline">
+					<div class="form-group">
+						<input type="text" name="q" value="" class="form-control" placeholder="输入活动名称或创建者"/>
+					</div>
+					<div class="form-group">
+						<input type="submit" value="搜索" class="form-control"/>
+					</div>
+				</form>
+			</div>
+
+					<div class="about_us">
+						<img src="{% static 'image/Mine.png'%}">
+						<p>Philosopher是一个公益活动发布、申请以及管理的平台。为您提供最新最全的公益活动资讯，是你结识更多热心小伙伴、获取更多公益时的最佳选择。</p>
+						<div class="clear"></div>
+					</div>
+					<div class="rank">
+						<span class="title">当前最新的活动</span>
+						<hr>
+						<ul>
+						{% for activity in newTen %}
+						<li>
+							<a href="/philosopher/activity/detail/{{ activity.id }}" >{{ activity }}</a>
+						</li>
+						{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<div class="footer">
+	<div>
+		© Copyright 2015
+	</div>
+	<div>
+		Thanks for our great leader <b>Chen Yong rui</b> for his picture.
+	</div>
+</div>
+<div class="toTop">
+	<span class="glyphicon glyphicon-eject" aria-hidden="true"></span>
+</div>
+</body>
+</html>
