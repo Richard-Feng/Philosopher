@@ -1,0 +1,16 @@
+{% extends 'templates/philosopher/base.html' %}
+
+{% block content %}
+	<div >
+	<script type="text/javascript" src="/../../../static/js/activityEdit.js"></script>
+	<script type="text/javascript" src="/../../../static/js/jquery.validate.min.js"></script>
+		<div class="row">
+			<h2 align="center">新建公益活动</h2>
+			<form class="col-md-12" id="activityEditForm" enctype="multipart/form-data" method="POST" >
+				{% csrf_token %}
+				{{ form.as_p }}
+				<button class="btn btn-primary center-btn" type="submit" >Save</button>
+			</form>
+		</div>
+	</div>
+{% endblock content %}
