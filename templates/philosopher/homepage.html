@@ -2,7 +2,12 @@
 
 {% block content %}
 <div id="homepagePage">
-		{% for activity in activities %}
+	{% ifequal activities.paginator.count 0 %}
+	<div>
+		对不起，找不到您想要的信息！
+	</div>
+	{% else %}
+		{% for activity in activities.object_list %}
 	<div class="row">
 		<div class="col-md-12">
 			<div class="activityContent">
@@ -14,7 +19,7 @@
 					<p class="em06">发起者： {{ activity.atorganizer.username }}</p>
 					<p class="descripe">简介：{{ activity.atcontent|truncatechars:40 }}</p>
 					<a href="/philosopher/activity/detail/{{ activity.id }}" class="readmore">Read More..</a>
-					<p><span id="date">{{ activity.applystart }}</span></p>
+					<p><span id="date">申请开始时间：{{ activity.applystart|date:'Y年m月d日' }}</span></p>
 				</div>
 				<div class="clear"></div>
 			</div>
@@ -22,5 +27,24 @@
 	</div>
 	<hr>
 		{% endfor %}
+	{% endifequal %}
+
+	<div align="center" style="font-size:1.5em;">
+		{% ifnotequal activities.paginator.num_pages 1 %}
+			{% if activities.has_previous %}
+  			<a href="?page={{ activities.previous_page_number }}&q={{ queryValue }}">上一页</a>
+  			{% endif %}
+			{% for page_number in activities.paginator.page_range %}
+				{% ifequal page_number activities.number %}
+					{{ page_number }}
+				{% else %}
+					<a href="?page={{ page_number }}&q={{ queryValue }}">{{ page_number }}</a>
+				{% endifequal %}
+			{% endfor %}
+			{% if activities.has_next %}
+  			<a href="?page={{ activities.next_page_number }}&q={{ queryValue }}">下一页</a>
+			{% endif %}
+		{% endifnotequal %}
+	</div>
 </div>
 {% endblock content %}
