@@ -1,4 +1,4 @@
-from philosopher.models import UserProfile, Activity, Application
+ 	from philosopher.models import UserProfile, Activity, Application
 from philosopher.forms import AddActivityForm
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render_to_response, redirect
@@ -18,6 +18,7 @@ from django.core.paginator import Paginator
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
 
+#function name should be lowcase
 def Homepage(request):
 	limit = 6
 	isOrganizer = False
